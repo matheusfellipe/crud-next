@@ -12,7 +12,7 @@ export default function Layout(props:LayoutProps){
         bg-white text-gray-800 rounded-md
         `}>
 <Title>{props.title}</Title>
-<div>
+<div className="p-6">
 {props.children}
 </div>
 
