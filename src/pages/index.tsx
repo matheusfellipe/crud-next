@@ -3,6 +3,7 @@ import Layout from "../components/Layout"
 import Table from "../components/Table"
 import Cliente from "../core/Cliente"
 import Form from "../components/Form"
+import { useState } from "react"
 
 const clientes = [
   new Cliente('Ana',34,'1'),
@@ -19,22 +20,37 @@ function clienteExcluido(cliente:Cliente) {
   console.log(`Excluir ${cliente.name}`)
 }
 
-export default function Home() {
+function salvarCliente(cliente:Cliente) {
+  console.log(cliente)
+}
 
+export default function Home() {
+  const [visivel,setVisivel] = useState<'table'|'form'>('table')
   return (
     <div className={`
     flex justify-center items-center h-screen
     bg-gradient-to-r from-blue-500 to-purple-500 text-white
     `}>
       <Layout title="Cadastro">
-        <div className="flex justify-end">
-        <Botao cor="green" className="mb-4">New Client</Botao>
-        </div>
-        <Table clientes={clientes} 
-        clienteSelecionado={clienteSelecionado}
-        clienteExcluido={clienteExcluido}
-        ></Table>
-        <Form cliente={clientes[2]}></Form>
+        {visivel==='table' ? (
+            <>
+            <div className="flex justify-end">
+            <Botao cor="green" className="mb-4"
+            onClick={()=>setVisivel('form')}
+            >New Client</Botao>
+            </div>
+            <Table clientes={clientes} 
+            clienteSelecionado={clienteSelecionado}
+            clienteExcluido={clienteExcluido}
+            ></Table>
+            </>
+        ):( <Form 
+          cliente={clientes[2]}
+          clienteMudou={salvarCliente}
+        cancelado={()=>setVisivel('table')}
+        />)}
+      
+       
       </Layout>
     </div>
   )

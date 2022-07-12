@@ -5,6 +5,8 @@ import Entrada from "./Entrada";
 
 interface FormProps {
 cliente:Cliente
+clienteMudou?:(cliente:Cliente)=>void
+cancelado?:()=> void
 }
 
 export default function Form(props: FormProps){
@@ -38,8 +40,10 @@ export default function Form(props: FormProps){
             />
 
             <div className=" flex justify-end mt-3">
-                <Botao cor="blue" className="mr-2">{id?'Alterar':'Salvar'}</Botao>
-                <Botao>Cancelar</Botao>
+                <Botao cor="blue" className="mr-2" 
+                onClick={()=>props.clienteMudou?.(new Cliente(nome,idade,id))}>
+                    {id?'Alterar':'Salvar'}</Botao>
+                <Botao onClick={props.cancelado}>Cancelar</Botao>
             </div>
         </div>
     )
