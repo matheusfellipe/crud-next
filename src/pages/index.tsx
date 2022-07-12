@@ -12,20 +12,31 @@ const clientes = [
   new Cliente('JP',30,'4')
 ]
 
-function clienteSelecionado(cliente:Cliente) {
-  console.log(cliente.name)
-}
-
-function clienteExcluido(cliente:Cliente) {
-  console.log(`Excluir ${cliente.name}`)
-}
-
-function salvarCliente(cliente:Cliente) {
-  console.log(cliente)
-}
-
 export default function Home() {
+
+  const [cliente,setCliente] = useState<Cliente>(Cliente.void())
   const [visivel,setVisivel] = useState<'table'|'form'>('table')
+
+  function clienteSelecionado(cliente:Cliente) {
+    setCliente(cliente)
+    setVisivel('form')
+  }
+  
+  function clienteExcluido(cliente:Cliente) {
+    console.log(`Excluir ${cliente.name}`)
+  }
+
+  function novoCliente() {
+    setCliente(Cliente.void())
+    setVisivel('form')
+  }
+  
+  function salvarCliente(cliente:Cliente) {
+    console.log(cliente)
+    setVisivel('table')
+  }
+
+ 
   return (
     <div className={`
     flex justify-center items-center h-screen
@@ -36,7 +47,7 @@ export default function Home() {
             <>
             <div className="flex justify-end">
             <Botao cor="green" className="mb-4"
-            onClick={()=>setVisivel('form')}
+            onClick={novoCliente}
             >New Client</Botao>
             </div>
             <Table clientes={clientes} 
@@ -45,7 +56,7 @@ export default function Home() {
             ></Table>
             </>
         ):( <Form 
-          cliente={clientes[2]}
+          cliente={cliente}
           clienteMudou={salvarCliente}
         cancelado={()=>setVisivel('table')}
         />)}
